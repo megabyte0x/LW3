@@ -11,7 +11,7 @@ contract CryptoDevToken is ERC20, Ownable {
 
     uint256 public constant tokensPerNFT = 10 * 10 ** 18;
 
-    uint256 public constant maxTokenSupply = 10000 * 10 ** 18;
+    uint256 public constant maxTotalSupply = 10000 * 10 ** 18;
 
     ICryptoDevs CryptoDevsNFT;
 
@@ -27,7 +27,7 @@ contract CryptoDevToken is ERC20, Ownable {
 
         uint256 amountWithDecimals = amount * 10 ** 18;
         require(
-            (totalSupply() + amountWithDecimals) <= maxTokenSupply,
+            (totalSupply() + amountWithDecimals) <= maxTotalSupply,
             "Max Tokens Distributed"
         );
 
