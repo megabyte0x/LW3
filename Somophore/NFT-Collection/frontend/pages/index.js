@@ -46,7 +46,7 @@ export default function Home() {
     try {
       const signer = await getProviderOrSigner(true);
 
-      const nftContract = new Contract(NFT_CONTRACT_ADDRESSl, abi, signer);
+      const nftContract = new Contract(NFT_CONTRACT_ADDRESS, abi, signer);
 
       const tx = await nftContract.preSaleMint({
         value: utils.parseEther("0.01")
@@ -90,7 +90,7 @@ export default function Home() {
     try {
       const signer = await getProviderOrSigner(true);
 
-      const nftContract = await Contract(NFT_CONTRACT_ADDRESS, abi, signer);
+      const nftContract = new Contract(NFT_CONTRACT_ADDRESS, abi, signer);
 
       const tx = await nftContract.startPreSale();
 
@@ -110,7 +110,7 @@ export default function Home() {
     try {
       const provider = await getProviderOrSigner();
 
-      const nftContract = await Contract(NFT_CONTRACT_ADDRESS, abi, provider);
+      const nftContract = new Contract(NFT_CONTRACT_ADDRESS, abi, provider);
 
       const _preSaleStarted = await nftContract.preSaleStarted();
 
@@ -130,7 +130,7 @@ export default function Home() {
     try {
       const provider = await getProviderOrSigner();
 
-      const nftContract = await Contract(NFT_CONTRACT_ADDRESS, abi, provider);
+      const nftContract = new Contract(NFT_CONTRACT_ADDRESS, abi, provider);
 
       const _preSaleEnded = await nftContract.preSaleEnded();
 
@@ -150,7 +150,7 @@ export default function Home() {
     try {
       const provider = await getProviderOrSigner();
 
-      const nftContract = await Contract(NFT_CONTRACT_ADDRESS, abi, provider);
+      const nftContract = new Contract(NFT_CONTRACT_ADDRESS, abi, provider);
 
       const _owner = await nftContract.owner();
 
@@ -159,6 +159,7 @@ export default function Home() {
       const address = await signer.getAddress();
 
       if (address.toLowerCase() === _owner.toLowerCase()) {
+        console.log("owner found")
         setOwner(true);
       }
     } catch (error) {
@@ -170,7 +171,7 @@ export default function Home() {
     try {
       const provider = await getProviderOrSigner();
 
-      const nftContract = await Contract(NFT_CONTRACT_ADDRESS, abi, provider);
+      const nftContract = new Contract(NFT_CONTRACT_ADDRESS, abi, provider);
 
       const _tokenIds = await nftContract.tokenIds();
 
