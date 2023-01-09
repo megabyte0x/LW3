@@ -1,31 +1,28 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
-// will compile your contracts, add the Hardhat Runtime Environment's members to the
-// global scope, and execute the script.
-const hre = require("hardhat");
+const { ethers } = require("hardhat");
+const { NFT_CONTRACT_ADDRESS } = require("../constants");
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
-  const unlockTime = currentTimestampInSeconds + ONE_YEAR_IN_SECS;
 
-  const lockedAmount = hre.ethers.utils.parseEther("1");
+  const FakeNFTMarketplace = await ethers.getContractFactory("FakeNFTMarketplace");
+  const fakeNFTMarketplace = await FakeNFTMarketplace.deploy();
+  await fakeNFTMarketplace.deployed();
+  console.log("FakeNFTMarketplace deployed to:", fakeNFTMarketplace.address);
 
-  const Lock = await hre.ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
+  const CryptoDevDAO = await ethers.getContractFactory("CryptoDevDAO");
+  const cryptoDevDAO = await CryptoDevDAO.deploy(fakeNFTMarketplace.address, NFT_CONTRACT_ADDRESS, {
+    value: ethers.utils.parseEther("1")
+  });
+  await cryptoDevDAO.deployed();
+  console.log("CryptoDevDAO deployed to:", cryptoDevDAO.address);
 
-  await lock.deployed();
-
-  console.log(
-    `Lock with 1 ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
-  );
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+
+// FakeNFTMarketplace deployed to: 0xF20DED5Cac2E1c0661E2F81D22F4059BB9761D40
+// CryptoDevDAO deployed to: 0xE2C984a4faD8E9232D1bb0c2b9978E854cafcf21
